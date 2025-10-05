@@ -3,319 +3,182 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>CodePen - React &amp; CSS Grid Image Gallery</title>
+  <title>CodePen - Full-Screen Responsive Image Slider</title>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'>
+  <link rel="stylesheet" href="./style.css">
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap");
 
-  <style>
-    @charset "UTF-8";
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    *,
-    *:before,
-    *:after {
-      box-sizing: border-box;
-    }
+body {
+  font-family: "Lexend", sans-serif;
+  background-color: #362a2b;
+  color: #e5ebf3;
+}
 
-    html {
-      font-size: 16px;
-    }
+.slider {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
 
-    body {
-      font-family: helvetica;
-      position: relative;
-      font-size: 100%;
-      background: linear-gradient(to right, #333333, #0e0e0e);
-    }
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
 
-    .gallery-container {
-      padding: 0.9375rem 0;
-    }
+.slide.current {
+  opacity: 1;
+}
 
-    .gallery-container h1 {
-      margin: 2rem 0;
-      padding: 0;
-      text-align: center;
-      color: #fff;
-      text-transform: uppercase;
-      font-size: 6.5vw;
-      font-weight: lighter;
-    }
 
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-gap: 8px;
-      max-width: 1200px;
-      width: 100%;
-      margin: 0 auto;
-    }
+.slide:first-child {
+  background: url("1.png") no-repeat
+    center top/cover;
+}
 
-    @media (min-width: 20em) {
-      .gallery-grid {
-        grid-template-columns: repeat(1, 1fr);
-      }
-    }
+.slide:nth-child(2) {
+  background: url("2.png") no-repeat
+    center top/cover;
+}
 
-    @media (min-width: 34em) {
-      .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
+.slide:nth-child(3) {
+  background: url("3.png") no-repeat
+    center top/cover;
+}
+  
+.slide:nth-child(4) {
+  background: url("4.png") no-repeat
+    center top/cover;
+}
+  
+.slide:nth-child(5) {
+  background: url("5.png") no-repeat
+    center top/cover;
+}  
+  
+.slide:nth-child(6) {
+  background: url("6.png") no-repeat
+    center top/cover;
+}
+.buttons button#prev {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+}
 
-    @media (min-width: 60em) {
-      .gallery-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
+.buttons button#next {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+}
 
-    .gallery-grid img {
-      width: 100%;
-      border: 5px solid #fff;
-    }
+.buttons button {
+  border: 2px solid #e5ebf3;
+  background-color: transparent;
+  color: #e5ebf3;
+  cursor: pointer;
+  padding: 13px 15px;
+  border-radius: 50%;
+  outline: none;
+}
 
-    .gallery-grid div {
-      position: relative;
-      cursor: pointer;
-    }
+.buttons button:hover {
+  background-color: #e5ebf3;
+  color: #362a2b;
+}
 
-    .gallery-grid div:before,
-    .gallery-grid div:after {
-      transition: 0.3s opacity ease;
-      opacity: 0;
-    }
+@media (min-width: 640px) and (min-height: 640px) {
+  .slide .content {
+    bottom: 70px;
+    left: -600px;
+    width: 600px;
+    padding: 2rem;
+    line-height: 1.6;
+  }
 
-    .gallery-grid div:after {
-      content: "↔";
-      font-size: 80px;
-      position: absolute;
-      transform: translate3d(-50%, -50%, 0) rotate(-45deg);
-      color: #fff;
-      left: 50%;
-      top: 50%;
-      display: block;
-    }
+  .slide .content h1 {
+    font-size: 2rem;
+  }
 
-    .gallery-grid div:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 4px;
-      left: 0;
-      right: 0;
-      background: rgba(34, 34, 34, 0.5);
-      display: block;
-    }
-
-    .gallery-grid div:hover:before,
-    .gallery-grid div:hover:after {
-      opacity: 1;
-      transition: 0.3s opacity ease;
-    }
-
-    .modal {
-      position: fixed;
-      z-index: 999;
-      width: 50%;
-      max-width: 800px;
-      top: 50%;
-      left: 50%;
-      transform: translate3d(-50%, -50%, 0);
-    }
-
-    @media (min-width: 20em) {
-      .modal {
-        width: 95%;
-      }
-    }
-
-    @media (min-width: 34em) {
-      .modal {
-        width: 80%;
-      }
-    }
-
-    @media (min-width: 60em) {
-      .modal {
-        width: 60%;
-      }
-    }
-
-    .modal img {
-      width: 100%;
-      border: 5px solid #fff;
-    }
-
-    .modal-overlay {
-      position: fixed;
-      z-index: 1;
-      height: 100%;
-      width: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      top: 0;
-      left: 0;
-    }
-
-    .modal-body a {
-      position: absolute;
-      display: inline;
-      color: #222;
-      text-decoration: none;
-      line-height: 36px;
-      font-size: 30px;
-      font-weight: lighter;
-      background: #fff;
-      border-radius: 5px;
-      height: 40px;
-      width: 40px;
-      text-align: center;
-    }
-
-    .modal-body .modal-close {
-      right: 0;
-      top: 0;
-      border-radius: 0 0 0 5px;
-    }
-
-    .modal-body .modal-next,
-    .modal-body .modal-prev {
-      right: 0;
-      top: calc(50% - 25px);
-      border-radius: 5px 0 0 5px;
-      height: 50px;
-      line-height: 40px;
-      font-size: 60px;
-    }
-
-    .modal-body .modal-prev {
-      left: 0;
-      right: auto;
-      border-radius: 0 5px 5px 0;
-    }
-
-    .modal-body {
-      position: relative;
-    }
-  </style>
-
+  .slide.current .content {
+    transform: translateX(600px);
+  }
+}
+</style>
 </head>
 
 <body>
   <!-- partial:index.partial.html -->
-  <section class="gallery-container"></section>
+  <div class="slider">
+    <div class="slide current"></div>
+    <div class="slide"></div>
+    <div class="slide"></div>
+
+  </div>
+  <div class="buttons">
+    <button id="prev"><i class="fas fa-arrow-left"></i></button>
+    <button id="next"><i class="fas fa-arrow-right"></i></button>
+  </div>
   <!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js'></script>
-
   <script>
-    const imgUrls = ['1.png', '2.png', '3.png', '4.png', '5.png', '6.png'];
+    const slides = document.querySelectorAll(".slide");
+    const nextButton = document.getElementById("next");
+    const prevButton = document.getElementById("prev");
+    const auto = true;
+    const intervalTime = 5000;
+    let slideInterval;
 
-
-    class Gallery extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = { currentIndex: null };
-        this.closeModal = this.closeModal.bind(this);
-        this.findNext = this.findNext.bind(this);
-        this.findPrev = this.findPrev.bind(this);
-        this.renderImageContent = this.renderImageContent.bind(this);
+    const nextSlide = () => {
+      const current = document.querySelector(".current");
+      current.classList.remove("current");
+      if (current.nextElementSibling) {
+        current.nextElementSibling.classList.add("current");
+      } else {
+        slides[0].classList.add("current");
       }
-      renderImageContent(src, index) {
-        return /*#__PURE__*/(
-          React.createElement("div", { onClick: e => this.openModal(e, index) }, /*#__PURE__*/
-            React.createElement("img", { src: src, key: src })));
+    };
 
-
+    const prevSlide = () => {
+      const current = document.querySelector(".current");
+      current.classList.remove("current");
+      if (current.previousElementSibling) {
+        current.previousElementSibling.classList.add("current");
+      } else {
+        slides[slides.length - 1].classList.add("current");
       }
-      openModal(e, index) {
-        this.setState({ currentIndex: index });
+    };
+
+    nextButton.addEventListener("click", () => {
+      nextSlide();
+      if (auto) {
+        clearInterval(slideInterval);
+        slideInterval = setInterval(nextSlide, intervalTime);
       }
-      closeModal(e) {
-        if (e != undefined) {
-          e.preventDefault();
-        }
-        this.setState({ currentIndex: null });
+    });
+    prevButton.addEventListener("click", () => {
+      prevSlide();
+      if (auto) {
+        clearInterval(slideInterval);
+        slideInterval = setInterval(nextSlide, intervalTime);
       }
-      findPrev(e) {
-        if (e != undefined) {
-          e.preventDefault();
-        }
-        this.setState(prevState => ({
-          currentIndex: prevState.currentIndex - 1
-        }));
+    });
 
-      }
-      findNext(e) {
-        if (e != undefined) {
-          e.preventDefault();
-        }
-        this.setState(prevState => ({
-          currentIndex: prevState.currentIndex + 1
-        }));
-
-      }
-      render() {
-        return /*#__PURE__*/(
-          React.createElement("div", { className: "gallery-container" }, /*#__PURE__*/
-            React.createElement("h1", null, "Gallery"), /*#__PURE__*/
-            React.createElement("div", { className: "gallery-grid" },
-              imgUrls.map(this.renderImageContent)), /*#__PURE__*/
-
-            React.createElement(GalleryModal, {
-              closeModal: this.closeModal,
-              findPrev: this.findPrev,
-              findNext: this.findNext,
-              hasPrev: this.state.currentIndex > 0,
-              hasNext: this.state.currentIndex + 1 < imgUrls.length,
-              src: imgUrls[this.state.currentIndex]
-            })));
-
-
-
-      }
+    if (auto) {
+      slideInterval = setInterval(nextSlide, intervalTime);
     }
 
-
-    class GalleryModal extends React.Component {
-      constructor() {
-        super();
-        this.handleKeyDown = this.handleKeyDown.bind(this);
-      }
-      componentDidMount() {
-        document.body.addEventListener('keydown', this.handleKeyDown);
-      }
-      componentWillUnMount() {
-        document.body.removeEventListener('keydown', this.handleKeyDown);
-      }
-      handleKeyDown(e) {
-        if (e.keyCode === 27)
-          this.props.closeModal();
-        if (e.keyCode === 37 && this.props.hasPrev)
-          this.props.findPrev();
-        if (e.keyCode === 39 && this.props.hasNext)
-          this.props.findNext();
-      }
-      render() {
-        const { closeModal, hasNext, hasPrev, findNext, findPrev, src } = this.props;
-        if (!src) {
-          console.log('whut');
-          return null;
-        }
-        return /*#__PURE__*/(
-          React.createElement("div", null, /*#__PURE__*/
-            React.createElement("div", { className: "modal-overlay", onClick: closeModal }), /*#__PURE__*/
-            React.createElement("div", { isOpen: !!src, className: "modal" }, /*#__PURE__*/
-              React.createElement("div", { className: "modal-body" }, /*#__PURE__*/
-                React.createElement("a", { href: "#", className: "modal-close", onClick: closeModal, onKeyDown: this.handleKeyDown }, "\xD7"),
-                hasPrev && /*#__PURE__*/React.createElement("a", { href: "#", className: "modal-prev", onClick: findPrev, onKeyDown: this.handleKeyDown }, "\u2039"),
-                hasNext && /*#__PURE__*/React.createElement("a", { href: "#", className: "modal-next", onClick: findNext, onKeyDown: this.handleKeyDown }, "\u203A"), /*#__PURE__*/
-                React.createElement("img", { src: src })))));
-
-
-
-
-      }
-    }
-
-
-    ReactDOM.render( /*#__PURE__*/React.createElement(Gallery, null), document.querySelector('.gallery-container'));
   </script>
 
 </body>
