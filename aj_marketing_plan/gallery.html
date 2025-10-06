@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>CodePen - Full-Screen Responsive Image Slider</title>
+    <title>Full-Screen Responsive Image Slider</title>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'>
     <link rel="stylesheet" href="./style.css">
     <style>
@@ -42,7 +42,7 @@
             opacity: 1;
         }
 
-        /* --- 17 IMAGE BACKGROUNDS UPDATED TO .JPG BELOW --- */
+        /* --- 17 IMAGE BACKGROUNDS --- */
         .slide:first-child {
             background: url("1.jpg") no-repeat center top/cover;
         }
@@ -110,18 +110,16 @@
         .slide:nth-child(17) {
             background: url("17.jpg") no-repeat center top/cover;
         }
-        /* --- END OF UPDATED SLIDES --- */
 
-        /* NEW RULE TO CENTER BUTTONS VIA THE PARENT CONTAINER */
+        /* --- BUTTON CENTERING FIX --- */
         .buttons {
             position: absolute;
             width: 100%;
             top: 50%;
-            transform: translateY(-50%);
-            z-index: 10; 
+            transform: translateY(-50%); /* Centers the entire row of buttons vertically */
+            z-index: 10;
         }
 
-        /* INDIVIDUAL BUTTON RULES: Removed the redundant 'top: 50%' */
         .buttons button#prev {
             position: absolute;
             left: 1rem;
@@ -137,7 +135,15 @@
             background-color: transparent;
             color: #e5ebf3;
             cursor: pointer;
-            padding: 13px 15px;
+            
+            /* Sizing and Flexbox for Centering */
+            padding: 0; 
+            width: 45px; 
+            height: 45px; 
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            
             border-radius: 50%;
             outline: none;
         }
