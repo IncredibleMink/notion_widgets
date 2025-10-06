@@ -66,7 +66,7 @@
         .slide:nth-child(6) {
             background: url("6.jpg") no-repeat center top/cover;
         }
-        
+
         .slide:nth-child(7) {
             background: url("7.jpg") no-repeat center top/cover;
         }
@@ -112,16 +112,23 @@
         }
         /* --- END OF UPDATED SLIDES --- */
 
+        /* NEW RULE TO CENTER BUTTONS VIA THE PARENT CONTAINER */
+        .buttons {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10; 
+        }
 
+        /* INDIVIDUAL BUTTON RULES: Removed the redundant 'top: 50%' */
         .buttons button#prev {
             position: absolute;
-            top: 50%;
             left: 1rem;
         }
 
         .buttons button#next {
             position: absolute;
-            top: 50%;
             right: 1rem;
         }
 
